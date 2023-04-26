@@ -13,46 +13,43 @@
       <div v-for="coin in updatedCoins" :key="coin.s">
         <CryptoItem :coin="coin" />
       </div>
-
     </ul>
 
     <div class="pagination">
       <button @click="decrementPage()" class="prev-btn">&lt;</button>
-      <button v-on:click="incrementPage" class="next-btn">&gt;</button>
+      <button @click="incrementPage" class="next-btn">&gt;</button>
     </div>
 
   </div>
 </template>
 
 <script>
+import { fillWebSocketUrl, handleMessage } from '@/utils/wsUtils.js';
+import { fillTop100Symbols, sortByChanges, sortByPrice } from '@/utils/utils.js';
 import CryptoItem from './CryptoItem.vue';
-import { cryptoSymbol } from 'crypto-symbol'
-const { nameLookup } = cryptoSymbol({})
 
 export default {
   data() {
     return {
       connection: null,
       updatedCoins: [],
-      isChangesSorted: false,
-      isPriceSorted: false,
+      sortOptions: {
+        isChangesSorted: false,
+        isPriceSorted: false,
+      },
       page: 1,
       coinSymbols: [],
-      wsMessageQueue: []
     };
   },
 
+
   async created() {
     const urlData = Object.fromEntries(new URL(window.location).searchParams.entries());
-    if(urlData.page)
-    this.page = urlData.page
+    if (urlData.page)
+      this.page = urlData.page
 
-    await this.fillSymbols();
+    this.coinSymbols = await fillTop100Symbols();
 
-    if (localStorage.getItem('cryptoList') != null) {
-      const cryptoList = localStorage.getItem('cryptoList');
-      this.updatedCoins = JSON.parse(cryptoList);
-    }
     this.connectToWebSocket();
   },
 
@@ -60,10 +57,6 @@ export default {
   beforeUnmount() {
     this.connection.close();
     this.connection = null; // to prevent memory leacking
-
-    const cryptoList = JSON.stringify(this.updatedCoins);
-    localStorage.setItem('cryptoList', cryptoList);
-
   },
 
   methods: {
@@ -72,6 +65,7 @@ export default {
       this.afterPageChanged();
     },
 
+
     decrementPage() {
       if (this.page == 1)
         return;
@@ -79,60 +73,29 @@ export default {
       this.afterPageChanged();
     },
 
-    afterPageChanged(){
+
+    afterPageChanged() {
       this.closeWebSocket();
       this.connectToWebSocket();
       this.changeUrl();
     },
 
-    changeUrl(){
-      window.history.pushState(null,"cryptolistpage",`${window.location.pathname}?page=${this.page}`)
-    },
 
-
-    async fillSymbols() {
-      await fetch(`https://localhost:7156/market/list`)
-        .then(response => response.json())
-        .then(data => {
-          this.coinSymbols = data;
-        })
-    },
-
-
-    fillUrl() {
-      let url = 'wss://stream.binance.com:9443/ws';
-
-      const start = (this.page - 1) * 6;
-      const end = this.page * 6 + 1;
-      console.log(start + " - end" + end)
-
-      console.log(this.coinSymbols);
-      let pageSymbols = this.coinSymbols.slice(start, end);
-      pageSymbols.forEach(symbol => {
-        url += '/' + symbol.toLowerCase() + '@ticker';
-      });
-      return url;
-    },
-
-
-    processNextMessage() {
-      const message = this.wsMessageQueue.shift();
-      if (message) {
-        this.handleMessage(message);
-      }
+    changeUrl() {
+      window.history.pushState(null, "cryptolistpage", `${window.location.pathname}?page=${this.page}`)
     },
 
 
     connectToWebSocket() {
       this.updatedCoins = [];
-      let url = this.fillUrl();
+      let url = fillWebSocketUrl(
+        this.coinSymbols.slice((this.page - 1) * 6, this.page * 6)
+      );
       this.connection = new WebSocket(url);
 
       this.connection.onmessage = async (event) => {
-        const data = JSON.parse(event.data);
-           this.wsMessageQueue.push(data);
-      this.processNextMessage();
-      }
+        handleMessage(JSON.parse(event.data), this.updatedCoins);
+      };
 
       this.connection.onopen = () => {
         console.log("Successfully connected to websocket " + url);
@@ -143,45 +106,18 @@ export default {
       };
     },
 
-    handleMessage(data){
-      const cryptoIndex = this.updatedCoins.findIndex(coin => coin.s === data.s);
-        if (cryptoIndex !== -1) {
-          const crypto = this.updatedCoins[cryptoIndex];
-          crypto.c = data.c;
-          crypto.P = data.P;
-        }
-        else {
-          data.name = nameLookup(data.s.slice(0, -4), { exact: true })
-          this.updatedCoins.push(data);
-        }
-    },
 
     closeWebSocket() {
       this.connection.close();
     },
 
     sortByChanges() {
-      if (!this.isChangesSorted) {
-        this.updatedCoins.sort((a, b) => b.P - a.P);
-        this.isChangesSorted = true
-      }
-      else {
-        this.updatedCoins.sort((a, b) => a.P - b.P);
-        this.isChangesSorted = false;
-      }
-      this.isPriceSorted = false; //reset price sort
+      sortByChanges(this.sortOptions, this.updatedCoins);
     },
 
     sortByPrice() {
-      if (!this.isPriceSorted) {
-        this.updatedCoins.sort((a, b) => b.p - a.p);
-        this.isPriceSorted = true
-      }
-      else {
-        this.updatedCoins.sort((a, b) => a.p - b.p);
-        this.isPriceSorted = false;
-      }
-      this.isChangesSorted = false; //reset changes sorted
+      sortByPrice(this.sortOptions, this.updatedCoins);
+      console.log(this.sortOptions.isPriceSorted);
     }
   },
 
