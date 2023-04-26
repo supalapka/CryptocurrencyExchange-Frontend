@@ -1,4 +1,6 @@
-# testproj
+# Cryptocurrency Exchange 
+
+This is a Front-end part of  Cryptocurrency Exchange project. Backend-end part: https://github.com/supalapka/CryptocurrencyExchange-Backend
 
 ## Project setup
 ```
@@ -13,12 +15,3 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
