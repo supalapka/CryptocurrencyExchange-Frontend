@@ -23,8 +23,7 @@
 
 
 <script>
-   import { cryptoSymbol } from 'crypto-symbol'
-   const { nameLookup } = cryptoSymbol({})
+import { handleMessage } from '@/utils/wsUtils.js';
 
 export default{
 
@@ -70,17 +69,7 @@ export default{
                "");
     
       this.connection.onmessage = async (event) => {
-        const data = JSON.parse(event.data);
-        data.name = nameLookup(data.s.slice(0,-4), { exact: true })
-        const cryptoIndex = this.updatedCoins.findIndex(coin => coin.s === data.s);
-        if (cryptoIndex !== -1) {
-          const crypto = this.updatedCoins[cryptoIndex];
-          crypto.c = data.c;
-          crypto.P = data.P;
-        }
-        else {
-              this.updatedCoins.push(data);
-            }
+        handleMessage(JSON.parse(event.data),this.updatedCoins)
         }
 
       this.connection.onopen = () => {
