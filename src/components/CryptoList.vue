@@ -11,7 +11,7 @@
       </div>
 
       <div v-for="coin in updatedCoins" :key="coin.s">
-        <CryptoItem :coin="coin" />
+        <CryptoItem :coinProps="coin" />
       </div>
     </ul>
 
@@ -39,6 +39,7 @@ export default {
       },
       page: 1,
       coinSymbols: [],
+      coinSymbolsByPage: [],
     };
   },
 
@@ -49,8 +50,8 @@ export default {
       this.page = urlData.page
 
     this.coinSymbols = await fillTop100Symbols();
+    await this.connectToWebSocket();
 
-    this.connectToWebSocket();
   },
 
 
@@ -66,17 +67,17 @@ export default {
     },
 
 
-    decrementPage() {
+    async decrementPage() {
       if (this.page == 1)
         return;
       this.page--;
-      this.afterPageChanged();
+      await this.afterPageChanged();
     },
 
 
-    afterPageChanged() {
+    async afterPageChanged() {
       this.closeWebSocket();
-      this.connectToWebSocket();
+      await this.connectToWebSocket();
       this.changeUrl();
     },
 
@@ -85,30 +86,49 @@ export default {
       window.history.pushState(null, "cryptolistpage", `${window.location.pathname}?page=${this.page}`)
     },
 
-
-    connectToWebSocket() {
+    updateCoins() {
       this.updatedCoins = [];
+      this.coinSymbolsByPage = this.coinSymbols.slice((this.page - 1) * 6, this.page * 6);
+      const coins = this.coinSymbolsByPage.map(item => ({ s: item }));
+      this.updatedCoins = [...this.updatedCoins, ...coins];
+    },
+
+    async connectToWebSocket() {
+      this.updateCoins();
+      console.log(this.updatedCoins);
       let url = fillWebSocketUrl(
         this.coinSymbols.slice((this.page - 1) * 6, this.page * 6)
       );
-      this.connection = new WebSocket(url);
 
-      this.connection.onmessage = async (event) => {
-        handleMessage(JSON.parse(event.data), this.updatedCoins);
-      };
+      return new Promise((resolve, reject) => {
+        this.connection = new WebSocket(url);
 
-      this.connection.onopen = () => {
-        console.log("Successfully connected to websocket " + url);
-      };
+        this.connection.onmessage = async (event) => {
+          handleMessage(JSON.parse(event.data), this.updatedCoins);
+        };
 
-      this.connection.onclose = (event) => {
-        console.log('Connection closed with code', event.code + ' url -> ' + url);
-      };
+        this.connection.onopen = () => {
+          console.log("Successfully connected to websocket " + url);
+          resolve(this.connection);
+        };
+
+        this.connection.onerror = (error) => {
+          console.log("WebSocket error: " + error);
+          reject(error);
+        };
+
+        this.connection.onclose = (event) => {
+          console.log('Connection closed with code', event.code + ' url -> ' + url);
+        };
+      });
     },
 
 
     closeWebSocket() {
+      if(this.connection != null){
       this.connection.close();
+      this.connection = null
+      }
     },
 
     sortByChanges() {
