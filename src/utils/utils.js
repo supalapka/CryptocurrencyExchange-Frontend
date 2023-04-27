@@ -1,8 +1,40 @@
-import axios from "axios";
 
 export async function fillTop100Symbols() {
-  const response = await axios.get(`https://localhost:7156/market/list`);
-  return response.data;
+  var data = [
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "ATOMUSDT",
+    "SOLUSDT",
+    "XRPUSDT",
+
+    "MATICUSDT",
+    "ADAUSDT",
+    "DOGEUSDT",
+    "TRXUSDT",
+    "AVAXUSDT",
+    "LTCUSDT",
+
+    "LINKUSDT",
+    "APTUSDT",
+    "MANAUSDT",
+    "AAVEUSDT",
+    "DASHUSDT",
+    "CAKEUSDT",
+
+    "UNIUSDT",
+    "XMRUSDT",
+    "FTMUSDT",
+    "EOSUSDT",
+    "STXUSDT",
+    "QNTUSDT",
+
+    "NEOUSDT",
+    "SUSHIUSDT",
+    "XLMUSDT",
+    "FILUSDT",
+  ];
+  return data;
 }
 
 export function sortByChanges(sortOptions, updatedCoins) {
