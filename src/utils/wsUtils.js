@@ -1,6 +1,4 @@
-import { cryptoSymbol } from 'crypto-symbol'
 
-const { nameLookup } = cryptoSymbol({})
 
 export async function fillSymbols() {
   const response = await fetch(`https://localhost:7156/market/list`);
@@ -24,7 +22,6 @@ export function handleMessage(data, updatedCoins) {
       crypto.c = data.c;
       crypto.P = data.P;
     } else {
-      data.name = nameLookup(data.s.slice(0, -4), { exact: true });
       updatedCoins.push(data);
     }
   }
