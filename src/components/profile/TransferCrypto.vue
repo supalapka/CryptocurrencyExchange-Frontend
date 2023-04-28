@@ -1,6 +1,7 @@
 <template>
 <div class="transfer-container">
   <h2 class="transfer-title">Cryptocurrency transfer</h2>
+  <h4 class="">Your pay id - {{ this.coins[0].userId }}</h4>
   <form class="transfer-form">
     <label class="transfer-label">Select cryptocurrency:</label>
     <select class="transfer-select" v-model="selectedSymbol">
@@ -11,7 +12,7 @@
     <label class="transfer-label">Enter the amount of coins:</label>
     <input v-model="symbolAmount" class="transfer-input"
      type="number" min="0" step="0.00000000001">
-    <label class="transfer-label">Enter the recipient:</label>
+    <label class="transfer-label">Enter the recipient pay id:</label>
     <input v-model="receiverId" class="transfer-input" type="text">
     <button class="transfer-button" @click.prevent="send">Send</button>
   </form>
@@ -23,7 +24,8 @@
   import axios from 'axios';
   import { cryptoSymbol } from 'crypto-symbol'
   const { nameLookup } = cryptoSymbol({})
-  
+  import {baseUrl } from '@/utils/utils.js';
+
 export default{
 
   data(){
@@ -37,7 +39,7 @@ export default{
 
   methods:{
     async send(){
-      await axios.post('https://cryptocurrencyexchange.azurewebsites.net/auth/send',{
+      await axios.post(`${baseUrl}/auth/send`,{
         symbol: this.selectedSymbol,
         amount: this.symbolAmount,
         receiver: this.receiverId,
@@ -47,7 +49,7 @@ export default{
     },
 
       async getCoins(){
-        await axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/get-wallet')
+        await axios.get(`${baseUrl}/auth/get-wallet`)
             .then(response => {
               this.coins = response.data;
             },

@@ -77,6 +77,7 @@
 
 <script>
 import axios from 'axios';
+import {baseUrl } from '@/utils/utils.js';
 
 export default {
   data() {
@@ -94,7 +95,7 @@ export default {
 
   methods: {
     closePosition(id, pnl, markPrice) {
-      axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/close?id=' + id + '&pnl=' + pnl + '&markPrice=' + markPrice)
+      axios.get(`${baseUrl}/futures/close?id=` + id + '&pnl=' + pnl + '&markPrice=' + markPrice)
         .catch(error => {
           console.log(error);
         });
@@ -111,7 +112,7 @@ export default {
 
     async updateHistory() {
       this.totalProfit = 0;
-      await axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/history')
+      await axios.get(`${baseUrl}/futures/history`)
         .then(
           response => {
             this.historyPositions = response.data;
@@ -139,7 +140,7 @@ export default {
     },
 
     async updatePositions() {
-      await axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/list')
+      await axios.get(`${baseUrl}/futures/list`)
         .then(response => {
           this.positions = response.data;
         });
@@ -165,7 +166,7 @@ export default {
 
 
     luquidatePosition(id, markPrice) {
-      axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/liquidate/?id=' + id + '&markPrice=' + markPrice)
+      axios.get(`${baseUrl}/futures/liquidate/?id=` + id + '&markPrice=' + markPrice)
       this.removePositionFromList(id);
     },
 

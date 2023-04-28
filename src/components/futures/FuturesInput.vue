@@ -23,6 +23,7 @@
 </template>
 
 <script>
+ import {baseUrl } from '@/utils/utils.js';
     import axios from 'axios';
 
     export default{
@@ -54,7 +55,7 @@
 
         methods: {
           updateUsdtBalance(){
-                 axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/coin-amount/usdt')
+                 axios.get(`${baseUrl}/auth/coin-amount/usdt`)
                     .then(response => {
                         this.usdtBalance = response.data.toFixed(2);
                     });
@@ -71,7 +72,7 @@
             },
 
             createFuture(positionParam){
-              axios.post('https://cryptocurrencyexchange.azurewebsites.net/futures/create',{
+              axios.post(`${baseUrl}/futures/create`,{
                 Symbol: this.symbol,
                 Margin: this.margin,
                 Leverage: this.leverage,

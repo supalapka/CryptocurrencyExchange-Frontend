@@ -20,6 +20,7 @@
 
 <script>
   import axios from 'axios';
+  import {baseUrl } from '@/utils/utils.js';
 export default{
   data() {
     return {
@@ -32,7 +33,7 @@ export default{
   methods :{
       async register(){
         if(this.password === this.confirmPassword){
-          const response = await axios.post('https://cryptocurrencyexchange.azurewebsites.net/register', {
+          const response = await axios.post(`${baseUrl}/register`, {
                     email: this.email,
                     password: this.password,
                 });

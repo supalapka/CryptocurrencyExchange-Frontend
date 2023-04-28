@@ -1,3 +1,5 @@
+export const baseUrl = 'http://crypto-api.fsdrfua4cwaeaeg2.westeurope.azurecontainer.io'; //api
+
 
 export async function fillTop100Symbols() {
   var data = [

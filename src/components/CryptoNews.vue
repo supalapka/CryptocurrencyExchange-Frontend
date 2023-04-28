@@ -24,6 +24,7 @@
  
  <script>
  import axios from 'axios';
+ import {baseUrl } from '@/utils/utils.js';
  export default {
    data() {
      return {
@@ -32,7 +33,8 @@
    },
  
    created() {
-     axios.get('https://cryptocurrencyexchange.azurewebsites.net/get-news').then((response) => {
+    const url = `${baseUrl}/get-news`;
+     axios.get(url).then((response) => {
        this.newsList = response.data;
  
        this.newsList.forEach(element => {

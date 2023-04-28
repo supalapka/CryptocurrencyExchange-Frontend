@@ -10,7 +10,7 @@
   
   <script>
   import axios from 'axios';
-  
+  import {baseUrl } from '@/utils/utils.js';
   export default{
     data(){
       return{
@@ -24,14 +24,14 @@
   
     methods:{
       getLastNotification(){
-        axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/notifications/last')
+        axios.get(`${baseUrl}/auth/notifications/last`)
         .then(response =>{
           this.notification = response.data;
         });
       },
   
       closeNotification() {
-        axios.get('https://cryptocurrencyexchange.azurewebsites.net/notifications/read/'+ this.notification.id);
+        axios.get(`${baseUrl}/notifications/read/`+ this.notification.id);
         this.notification = [];
       }
     },

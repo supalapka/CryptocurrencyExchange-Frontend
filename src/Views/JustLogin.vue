@@ -21,6 +21,7 @@
 
 <script>
     import axios from 'axios';
+    import {baseUrl } from '@/utils/utils.js';
     export default{
         data() {
             return {
@@ -33,7 +34,7 @@
         methods: {
             async login() {
                 try {
-                const response = await axios.post('https://cryptocurrencyexchange.azurewebsites.net/login', {
+                const response = await axios.post(`${baseUrl}/login`, {
                     email: this.email,
                     password: this.password,
                 });

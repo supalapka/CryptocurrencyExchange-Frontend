@@ -34,6 +34,7 @@
 <script>
 import axios from 'axios';
 import { cryptoSymbol } from 'crypto-symbol'
+import {baseUrl } from '@/utils/utils.js';
 const { nameLookup } = cryptoSymbol({})
 export default {
       data(){
@@ -44,7 +45,7 @@ export default {
 
 
    async created(){
-      await axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/get-wallet')
+      await axios.get(`${baseUrl}/auth/get-wallet`)
           .then(response => {
             this.coins = response.data;
           },

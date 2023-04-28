@@ -1,6 +1,7 @@
     <script>
     import CanvasJSChart from "@/components/CanvasJSVueComponent.vue"
     import TimeFrameButton from "@/components/UI/TImeFrameButton.vue"
+    import {baseUrl } from '@/utils/utils.js';
     import axios from 'axios';
     export default {
         components: {
@@ -68,7 +69,8 @@
         methods:{
             async updateTimeFrame(timeFrame){
               console.log(this.symbol);
-                const url = 'https://localhost:7156/candles?Symbol='+ this.symbol + '&Timeframe=' + timeFrame + '&Limit=' + 200;
+                const url = `${baseUrl}/candles?Symbol=${ this.symbol}&Timeframe=${timeFrame}&Limit=200`;
+
                const response = await axios.get(url);
                 this.options.data[0].dataPoints = response.data.map((data) => ({
                 x: new Date(data.openTime), //date
