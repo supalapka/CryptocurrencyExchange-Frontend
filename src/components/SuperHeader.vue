@@ -50,7 +50,7 @@ import axios from 'axios'
       },
 
       async created(){
-        await axios.get('https://localhost:7156/email') //try to authorize user with jwt when site is loaded
+        await axios.get('https://cryptocurrencyexchange.azurewebsites.net/email') //try to authorize user with jwt when site is loaded
             .then(responce =>{
               this.email = responce.data;
               this.isLoggedInMain = true;

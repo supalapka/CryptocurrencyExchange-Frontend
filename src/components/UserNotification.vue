@@ -24,14 +24,14 @@
   
     methods:{
       getLastNotification(){
-        axios.get('https://localhost:7156/auth/notifications/last')
+        axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/notifications/last')
         .then(response =>{
           this.notification = response.data;
         });
       },
   
       closeNotification() {
-        axios.get('https://localhost:7156/auth/notifications/read/'+ this.notification.id);
+        axios.get('https://cryptocurrencyexchange.azurewebsites.net/notifications/read/'+ this.notification.id);
         this.notification = [];
       }
     },

@@ -94,7 +94,7 @@ export default {
 
   methods: {
     closePosition(id, pnl, markPrice) {
-      axios.get('https://localhost:7156/futures/close?id=' + id + '&pnl=' + pnl + '&markPrice=' + markPrice)
+      axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/close?id=' + id + '&pnl=' + pnl + '&markPrice=' + markPrice)
         .catch(error => {
           console.log(error);
         });
@@ -111,7 +111,7 @@ export default {
 
     async updateHistory() {
       this.totalProfit = 0;
-      await axios.get('https://localhost:7156/futures/history')
+      await axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/history')
         .then(
           response => {
             this.historyPositions = response.data;
@@ -139,7 +139,7 @@ export default {
     },
 
     async updatePositions() {
-      await axios.get('https://localhost:7156/futures/list')
+      await axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/list')
         .then(response => {
           this.positions = response.data;
         });
@@ -165,7 +165,7 @@ export default {
 
 
     luquidatePosition(id, markPrice) {
-      axios.get('https://localhost:7156/futures/liquidate/?id=' + id + '&markPrice=' + markPrice)
+      axios.get('https://cryptocurrencyexchange.azurewebsites.net/futures/liquidate/?id=' + id + '&markPrice=' + markPrice)
       this.removePositionFromList(id);
     },
 

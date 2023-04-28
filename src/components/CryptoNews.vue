@@ -32,7 +32,7 @@
    },
  
    created() {
-     axios.get('https://localhost:7156/get-news').then((response) => {
+     axios.get('https://cryptocurrencyexchange.azurewebsites.net/get-news').then((response) => {
        this.newsList = response.data;
  
        this.newsList.forEach(element => {

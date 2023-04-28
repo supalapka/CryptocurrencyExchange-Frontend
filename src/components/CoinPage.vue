@@ -97,7 +97,7 @@ export default {
         },
 
         async buy(){
-         await axios.post('https://localhost:7156/auth/buy', {
+         await axios.post('https://cryptocurrencyexchange.azurewebsites.net/auth/buy', {
                     coinSymbol: this.coin.s.slice(0,-4),
                     amount: this.buyInput,
                 }).catch(error => {
@@ -109,7 +109,7 @@ export default {
         },
 
         async sell(){
-         await axios.post('https://localhost:7156/auth/sell', {
+         await axios.post('https://cryptocurrencyexchange.azurewebsites.net/auth/sell', {
                     coinSymbol: this.coin.s.slice(0,-4),
                     amount: this.sellInput,
                 }).catch(error => {
@@ -121,12 +121,12 @@ export default {
         },
 
          async updateBalances(){
-          axios.get('https://localhost:7156/auth/coin-amount/' + this.coinSymbol)
+          axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/coin-amount/' + this.coinSymbol)
           .then(response => {
             this.availableCoins = response.data.toFixed(2);
           });
 
-          axios.get('https://localhost:7156/auth/coin-amount/usdt')
+          axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/coin-amount/usdt')
           .then(response => {
             this.availableUSDT = response.data.toFixed(4);
           });

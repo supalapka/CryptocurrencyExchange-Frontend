@@ -13,7 +13,7 @@
      type="number" min="0" step="0.00000000001">
     <label class="transfer-label">Enter the recipient:</label>
     <input v-model="receiverId" class="transfer-input" type="text">
-    <button class="transfer-button" @click="send">Send</button>
+    <button class="transfer-button" @click.prevent="send">Send</button>
   </form>
 </div>
 
@@ -37,7 +37,7 @@ export default{
 
   methods:{
     async send(){
-      await axios.post('https://localhost:7156/auth/send',{
+      await axios.post('https://cryptocurrencyexchange.azurewebsites.net/auth/send',{
         symbol: this.selectedSymbol,
         amount: this.symbolAmount,
         receiver: this.receiverId,
@@ -47,7 +47,7 @@ export default{
     },
 
       async getCoins(){
-        await axios.get('https://localhost:7156/auth/get-wallet')
+        await axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/get-wallet')
             .then(response => {
               this.coins = response.data;
             },

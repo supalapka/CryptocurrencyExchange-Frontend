@@ -54,7 +54,7 @@
 
         methods: {
           updateUsdtBalance(){
-                 axios.get('https://localhost:7156/auth/coin-amount/usdt')
+                 axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/coin-amount/usdt')
                     .then(response => {
                         this.usdtBalance = response.data.toFixed(2);
                     });
@@ -71,7 +71,7 @@
             },
 
             createFuture(positionParam){
-              axios.post('https://localhost:7156/futures/create',{
+              axios.post('https://cryptocurrencyexchange.azurewebsites.net/futures/create',{
                 Symbol: this.symbol,
                 Margin: this.margin,
                 Leverage: this.leverage,

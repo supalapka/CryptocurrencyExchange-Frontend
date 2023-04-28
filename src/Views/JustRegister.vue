@@ -32,7 +32,7 @@ export default{
   methods :{
       async register(){
         if(this.password === this.confirmPassword){
-          const response = await axios.post('https://localhost:7156/register', {
+          const response = await axios.post('https://cryptocurrencyexchange.azurewebsites.net/register', {
                     email: this.email,
                     password: this.password,
                 });

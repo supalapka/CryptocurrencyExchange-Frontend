@@ -33,7 +33,7 @@
         methods: {
             async login() {
                 try {
-                const response = await axios.post('https://localhost:7156/login', {
+                const response = await axios.post('https://cryptocurrencyexchange.azurewebsites.net/login', {
                     email: this.email,
                     password: this.password,
                 });

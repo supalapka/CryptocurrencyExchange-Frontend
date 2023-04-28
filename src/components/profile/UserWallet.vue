@@ -44,7 +44,7 @@ export default {
 
 
    async created(){
-      await axios.get('https://localhost:7156/auth/get-wallet')
+      await axios.get('https://cryptocurrencyexchange.azurewebsites.net/auth/get-wallet')
           .then(response => {
             this.coins = response.data;
           },
