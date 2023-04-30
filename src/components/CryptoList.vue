@@ -40,6 +40,7 @@ export default {
       page: 1,
       coinSymbols: [],
       coinSymbolsByPage: [],
+      maxCoinsPerPage: 6,
     };
   },
 
@@ -62,6 +63,8 @@ export default {
 
   methods: {
     incrementPage() {
+      if(this.coinSymbols.slice((this.page - 1) * this.maxCoinsPerPage, this.page * this.maxCoinsPerPage).length != this.maxCoinsPerPage)
+        return;
       this.page++;
       this.afterPageChanged();
     },
@@ -88,7 +91,7 @@ export default {
 
     updateCoins() {
       this.updatedCoins = [];
-      this.coinSymbolsByPage = this.coinSymbols.slice((this.page - 1) * 6, this.page * 6);
+      this.coinSymbolsByPage = this.coinSymbols.slice((this.page - 1) * this.maxCoinsPerPage, this.page * this.maxCoinsPerPage);
       const coins = this.coinSymbolsByPage.map(item => ({ s: item }));
       this.updatedCoins = [...this.updatedCoins, ...coins];
     },
@@ -97,7 +100,7 @@ export default {
       this.updateCoins();
       console.log(this.updatedCoins);
       let url = fillWebSocketUrl(
-        this.coinSymbols.slice((this.page - 1) * 6, this.page * 6)
+        this.coinSymbols.slice((this.page - 1) * this.maxCoinsPerPage, this.page * this.maxCoinsPerPage)
       );
 
       return new Promise((resolve, reject) => {
