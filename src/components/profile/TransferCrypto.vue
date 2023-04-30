@@ -1,7 +1,7 @@
 <template>
 <div class="transfer-container">
   <h2 class="transfer-title">Cryptocurrency transfer</h2>
-  <h4 class="">Your pay id - {{ this.coins[0].userId }}</h4>
+  <h4 class="">Your Pay ID - {{ this.currentUserPayID }}</h4>
   <form class="transfer-form">
     <label class="transfer-label">Select cryptocurrency:</label>
     <select class="transfer-select" v-model="selectedSymbol">
@@ -12,7 +12,7 @@
     <label class="transfer-label">Enter the amount of coins:</label>
     <input v-model="symbolAmount" class="transfer-input"
      type="number" min="0" step="0.00000000001">
-    <label class="transfer-label">Enter the recipient pay id:</label>
+    <label class="transfer-label">Enter the recipient Pay ID:</label>
     <input v-model="receiverId" class="transfer-input" type="text">
     <button class="transfer-button" @click.prevent="send">Send</button>
   </form>
@@ -34,6 +34,7 @@ export default{
       selectedSymbol: '',
       symbolAmount: '',
       receiverId: '',
+      currentUserPayId: 0,
     }
   },
 
@@ -65,8 +66,9 @@ export default{
       }
   },
 
-  created(){
-    this.getCoins();
+  async created(){
+    await this.getCoins();
+    this.currentUserPayID = this.coins[0].userId;
   }
 }
 
