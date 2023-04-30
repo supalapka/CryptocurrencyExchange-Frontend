@@ -62,13 +62,12 @@ export default{
               this.coins.forEach(async coin => {
                 coin.name = nameLookup(coin.symbol,toString(), { exact: true });
                 });
-
+      this.currentUserPayID = this.coins[0].userId;
       }
   },
 
   async created(){
     await this.getCoins();
-    this.currentUserPayID = this.coins[0].userId;
   }
 }
 
