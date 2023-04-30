@@ -2,7 +2,7 @@
   <div class="search">
     <input v-model="searchQuery" @input="handleInputChange" type="text" placeholder="Search...">
     <div class="filtered-items-container">
-      <a :href="'market/' + item" class="filtered-item" v-for="item in searchResults" :key="item">
+      <a :href="'/market/' + item" class="filtered-item" v-for="item in searchResults" :key="item">
         {{ item }}
       </a>
     </div>
