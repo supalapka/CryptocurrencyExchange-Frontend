@@ -25,7 +25,7 @@
 
 <script>
 import { fillWebSocketUrl, handleMessage } from '@/utils/wsUtils.js';
-import { fillTop100Symbols, sortByChanges, sortByPrice } from '@/utils/utils.js';
+import { allCryptoSymbols, sortByChanges, sortByPrice } from '@/utils/utils.js';
 import CryptoItem from './CryptoItem.vue';
 
 export default {
@@ -49,7 +49,7 @@ export default {
     if (urlData.page)
       this.page = urlData.page
 
-    this.coinSymbols = await fillTop100Symbols();
+    this.coinSymbols = allCryptoSymbols;
     await this.connectToWebSocket();
 
   },

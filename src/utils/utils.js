@@ -1,43 +1,40 @@
-export const baseUrl = 'http://crypto-api.fsdrfua4cwaeaeg2.westeurope.azurecontainer.io'; //api
+//export const baseUrl = 'https://cryptocurrencyexchange.azurewebsites.net/'; //api
+export const baseUrl = "https://localhost:44363"; //api
 
+export const allCryptoSymbols = [
+  "BTCUSDT",
+  "ETHUSDT",
+  "BNBUSDT",
+  "ATOMUSDT",
+  "SOLUSDT",
+  "XRPUSDT",
 
-export async function fillTop100Symbols() {
-  var data = [
-    "BTCUSDT",
-    "ETHUSDT",
-    "BNBUSDT",
-    "ATOMUSDT",
-    "SOLUSDT",
-    "XRPUSDT",
+  "MATICUSDT",
+  "ADAUSDT",
+  "DOGEUSDT",
+  "TRXUSDT",
+  "AVAXUSDT",
+  "LTCUSDT",
 
-    "MATICUSDT",
-    "ADAUSDT",
-    "DOGEUSDT",
-    "TRXUSDT",
-    "AVAXUSDT",
-    "LTCUSDT",
+  "LINKUSDT",
+  "APTUSDT",
+  "MANAUSDT",
+  "AAVEUSDT",
+  "DASHUSDT",
+  "CAKEUSDT",
 
-    "LINKUSDT",
-    "APTUSDT",
-    "MANAUSDT",
-    "AAVEUSDT",
-    "DASHUSDT",
-    "CAKEUSDT",
+  "UNIUSDT",
+  "XMRUSDT",
+  "FTMUSDT",
+  "EOSUSDT",
+  "STXUSDT",
+  "QNTUSDT",
 
-    "UNIUSDT",
-    "XMRUSDT",
-    "FTMUSDT",
-    "EOSUSDT",
-    "STXUSDT",
-    "QNTUSDT",
-
-    "NEOUSDT",
-    "SUSHIUSDT",
-    "XLMUSDT",
-    "FILUSDT",
-  ];
-  return data;
-}
+  "NEOUSDT",
+  "SUSHIUSDT",
+  "XLMUSDT",
+  "FILUSDT",
+];
 
 export function sortByChanges(sortOptions, updatedCoins) {
   if (!sortOptions.isChangesSorted) {
