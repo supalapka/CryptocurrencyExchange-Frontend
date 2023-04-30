@@ -1,4 +1,5 @@
-<template>
+<template >
+  <div style="height: 700px;">
     <div class="container">
       <h1>Registration</h1>
       <form @submit.prevent="register">
@@ -16,6 +17,7 @@
         <button class="button" type="submit">Register</button>
       </form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -70,7 +72,7 @@ export default{
   width: 500px;
   margin: 0 auto;
   padding: 50px;
-  background-color: #1f2124;
+  background-color: #2c2e47;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(163, 5, 5, 0.1);
 }
@@ -96,7 +98,7 @@ input[type="password"] {
   margin-bottom: 20px;
   border-radius: 5px;
   border: none;
-  background-color: #353535;
+  background-color: #1d1e2e;
   color: #ffffff;
   font-size: 1.1rem;
 }
