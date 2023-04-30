@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CryptoList from "@/components/CryptoList.vue";
-import MainPage from "@/Views/MainPage.vue";
+import MainPage from "@/components/home_page/MainPage.vue";
 import CoinPage from "@/Views/CoinPage.vue";
 import JustRegister from "@/Views/JustRegister"
 import JustLogin from "@/Views/JustLogin"

@@ -18,33 +18,28 @@
       </td>
       
       <td>
-
         <Ad_promotion style="margin-left: 12px;"/>
-
       </td>
     </tr>
 
-
-    <tr style="height:200px;">
-        12312213
-    </tr>
-
-
     </tbody>
   </table>
+  <futures-how-to/>
 
 </template>
 
 <script>
-import CryptoNews from '@/components/CryptoNews.vue';
-import Ad_promotion from '@/components/Ad_promotion.vue';
-import UserNotification from '@/components/UserNotification.vue';
+import CryptoNews from '@/components/home_page/CryptoNews.vue';
+import Ad_promotion from '@/components/home_page/Ad_promotion.vue';
+import UserNotification from '@/components/home_page/UserNotification.vue';
+import FuturesHowTo from '@/components/home_page/FuturesHowTo.vue';
 
 export default{
   components:{
     CryptoNews,
     Ad_promotion,
-    UserNotification
+    UserNotification,
+    FuturesHowTo,
 }
 }
 </script>
