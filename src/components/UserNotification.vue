@@ -31,7 +31,7 @@
       },
   
       closeNotification() {
-        axios.get(`${baseUrl}/notifications/read/`+ this.notification.id);
+        axios.get(`${baseUrl}/auth/notifications/read/`+ this.notification.id);
         this.notification = [];
       }
     },
