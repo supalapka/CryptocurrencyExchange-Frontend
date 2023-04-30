@@ -5,10 +5,7 @@
         <div class="logo">
           <button class="header-btn" @click="goToMain">Crypto Exchange</button>
         </div>
-        <div class="search">
-          <input type="text" placeholder="Search...">
-          <button type="submit"><i class="fas fa-search"></i> Go</button>
-        </div>
+       <crypto-search/>
         <div class="list">
          <button class="header-btn" @click="goToMarket">Market</button>
         </div>
@@ -32,7 +29,9 @@
   <script>
 import axios from 'axios'
 import {baseUrl } from '@/utils/utils.js';
+import CryptoSearch from './CryptoSearch.vue';
   export default{
+    components:{CryptoSearch},
     data(){
       return{
         email: '',
@@ -142,29 +141,7 @@ import {baseUrl } from '@/utils/utils.js';
     width: 300px;
   }
   
-  .search{
-    width: 500px;
-  }
-  .search input[type="text"] {
-    padding: 8px 10px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    background-color: #1d1e2e;
-    color: #ffffff;
-    font-size: 16px;
-  }
   
-  .search button[type="submit"] {
-    background-color: #1d1e2e;
-    border: none;
-    color: #fff;
-    padding: 8px 10px;
-    border-radius: 5px;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
 
   .user-email{
     font-size: 20px;
