@@ -39,7 +39,19 @@ export default{
                     email: this.email,
                     password: this.password,
                 });
+                if (response.status === 200) {
                 console.log(response.data);
+                const responselogin = await axios.post(`${baseUrl}/login`, {
+                    email: this.email,
+                    password: this.password,
+                });
+                this.jwt = responselogin.data;
+                localStorage.setItem('jwt',this.jwt);
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.jwt;
+                this.$router.push('/main')
+                 this.$emit('loggedInUser', this.email)
+                this.$router.push('/main');
+                }
         }
       }
   }
