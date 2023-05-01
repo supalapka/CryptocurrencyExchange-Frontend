@@ -1,76 +1,66 @@
 <template>
-    <div class="cryptocurrencies">
-  <table>
-    <thead>
-      <tr>
-        <th>Cryptocurrency</th>
-        <th>Price</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="cryptocurrencies">
+    <table>
+      <thead>
+        <tr>
+          <th>Cryptocurrency</th>
+          <th>Price</th>
+          <th>Change</th>
+        </tr>
+      </thead>
+      <tbody>
 
-      <tr class="coins-list" v-for="coin in updatedCoins" :key="coin.s" @click="selectCoint(coin)">
-        <td>{{coin.name}}</td>
-        <td>${{parseFloat(coin.c)}}</td>
-        <td :class="parseFloat(coin.P) > 0 ? 'positive' : 'negative'"> {{parseFloat(coin.P).toFixed(2)}}%</td>
-      </tr>
-  
-    </tbody>
-  </table>
-</div>
+        <tr class="coins-list" v-for="coin in updatedCoins" :key="coin.s" @click="selectCoint(coin)">
+          <td>{{ coin.s }}</td>
+          <td>${{ parseFloat(coin.c) }}</td>
+          <td :class="parseFloat(coin.P) > 0 ? 'positive' : 'negative'"> {{ parseFloat(coin.P).toFixed(2) }}%</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
 </template>
 
 
 <script>
-import { handleMessage } from '@/utils/wsUtils.js';
+import { handleMessage, fillWebSocketUrl } from '@/utils/wsUtils.js';
+import { allCryptoSymbols } from '@/utils/utils.js';
 
-export default{
+export default {
 
-  data(){
-    return{
-      updatedCoins:[],
-
+  data() {
+    return {
+      updatedCoins: [],
     }
   },
 
-  created(){
-      if ( localStorage.getItem('futuresList') != null){
-      const cryptoList = localStorage.getItem('futuresList');
-      this.updatedCoins = JSON.parse(cryptoList);
-      }
+  created() {
+    this.updateCoins();
     this.connectToWebSocket();
   },
 
-  unmounted(){
-    const cryptoList = JSON.stringify(this.updatedCoins); 
-    localStorage.setItem('futuresList', cryptoList); 
-      this.closeWebSocket();
+  unmounted() {
+    this.closeWebSocket();
   },
 
-  methods:{
-    selectCoint(coin){
+  methods: {
+    selectCoint(coin) {
       this.$emit("selectCoin", coin);
     },
 
+    updateCoins() {
+      this.coinSymbolsByPage = allCryptoSymbols.slice(0, 12);
+      const coins = this.coinSymbolsByPage.map(item => ({ s: item }));
+      this.updatedCoins = [...this.updatedCoins, ...coins];
+    },
+
     connectToWebSocket() {
-      this.connection = new WebSocket("wss://stream.binance.com:9443/ws/" +
-               "btcusdt@ticker" +
-               "/dogeusdt@ticker" +
-               "/ethusdt@ticker" +
-               "/avaxusdt@ticker" +
-               "/solusdt@ticker" +
-               "/ltcusdt@ticker" +
-               "/bnbusdt@ticker" +
-               "/adausdt@ticker" +
-               "/shibusdt@ticker" +
-               "/etcusdt@ticker" +
-               "/luncusdt@ticker" +
-               "");
-    
+      const url = fillWebSocketUrl(allCryptoSymbols.slice(0, 12))
+      this.connection = new WebSocket(url);
+
       this.connection.onmessage = async (event) => {
-        handleMessage(JSON.parse(event.data),this.updatedCoins)
-        }
+        handleMessage(JSON.parse(event.data), this.updatedCoins)
+      }
 
       this.connection.onopen = () => {
         console.log("Successfully connected to websocket futures server...");
@@ -81,7 +71,7 @@ export default{
       };
     },
 
-    closeWebSocket(){
+    closeWebSocket() {
       this.connection.close();
     },
   },
@@ -109,7 +99,8 @@ thead th {
   border-bottom: 1px solid #34383e;
 }
 
-tbody td, tbody th {
+tbody td,
+tbody th {
   padding: 10px;
   border-bottom: 1px solid #34383e;
 }
