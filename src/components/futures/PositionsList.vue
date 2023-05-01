@@ -38,54 +38,27 @@
       </div>
     </div>
 
-    <div v-else id="history" class="tabcontent">
-      <h2>History</h2>
-      <div class="history-table">
-        <div class="positions-table">
-          <div class="positions-row header">
-            <div class="position-cell">Trading Pair</div>
-            <div class="position-cell">Position</div>
-            <div class="position-cell">Entry Price</div>
-            <div class="position-cell">Mark Price</div>
-            <div class="position-cell">Margin</div>
-            <div class="position-cell">PNL</div>
-            <div class="position-cell">Action</div>
-          </div>
-
-          <div class="positions-row" v-for="position in historyPositions" :key="position.id">
-            <div class="position-cell">{{ position.symbol }}</div>
-            <div class="position-cell">
-              <span :class="position.position == 'Long' ? 'positive' : 'negative'">{{ position.position }}</span>
-              <span class="leverage">{{ position.leverage }}x</span>
-            </div>
-            <div class="position-cell">${{ position.entryPrice }}</div>
-            <div class="position-cell">${{ position.markPrice }}</div>
-            <div class="position-cell">{{ position.margin }} USDT</div>
-            <div :class="parseFloat(position.percentChange) > 0 ? 'position-cell positive' : 'position-cell negative'">
-              {{ position.usdtPNL }}$ ({{ position.percentChange }}%)
-            </div>
-            <div class="position-cell">{{ position.action }}</div>
-          </div>
-          <p>Total: <span :class="parseFloat(totalProfit) > 0 ? 'positive' : 'negative'"> {{ totalProfit.toFixed(2) }}$
-            </span></p>
-        </div>
-      </div>
-    </div>
+    <future-history-list v-else />
   </div>
 </template>
 
 
 <script>
 import axios from 'axios';
-import {baseUrl } from '@/utils/utils.js';
+import { baseUrl } from '@/utils/utils.js';
+import FutureHistoryList from './FutureHistoryList.vue';
+import { calculatePercentChange } from "./futuresUtils.js"
+
 
 export default {
+  components: {
+    FutureHistoryList,
+  },
+
   data() {
     return {
       positions: [],
-      historyPositions: [],
       isHistiryTabActivated: false,
-      totalProfit: 0,
     }
   },
 
@@ -107,36 +80,6 @@ export default {
 
     changeTab() {
       this.isHistiryTabActivated = !this.isHistiryTabActivated;
-      this.updateHistory();
-    },
-
-    async updateHistory() {
-      this.totalProfit = 0;
-      await axios.get(`${baseUrl}/futures/history`)
-        .then(
-          response => {
-            this.historyPositions = response.data;
-          }
-        );
-
-      this.historyPositions.forEach(position => {
-        if (position.position === 0)
-          position.position = 'Long'
-        else
-          position.position = 'Short'
-
-        if (position.isLiquidated) {
-          position.percentChange = -100;
-          position.action = 'Liquidated';
-        }
-        else{
-          position.percentChange = this.calculatePercentChange(position.markPrice, position.entryPrice,
-            position.leverage, position.position);
-            position.action = 'CLosed';
-        }
-        position.usdtPNL = (position.margin * (position.percentChange / 100)).toFixed(2);
-        this.totalProfit += parseFloat(position.usdtPNL);
-      })
     },
 
     async updatePositions() {
@@ -146,16 +89,6 @@ export default {
         });
 
       await this.connectToWebSocketPrices();
-    },
-
-
-    calculatePercentChange(currentPrice, entryPrice, leverage, position) {
-      let percentChange = (((currentPrice - entryPrice) / entryPrice) * 100).toFixed(2);
-      percentChange = (percentChange * leverage).toFixed(2);
-      if (position === 'Short') {
-        percentChange = percentChange * -1;
-      }
-      return percentChange;
     },
 
 
@@ -212,12 +145,11 @@ export default {
           else if (position.position == 1)
             position.position = 'Short'
           position.currentPrice = parseFloat(data.c);
-          position.percentChange = this.calculatePercentChange(position.currentPrice, position.entryPrice, position.leverage, position.position);
+          position.percentChange = calculatePercentChange(position.currentPrice, position.entryPrice, position.leverage, position.position);
           position.usdtPNL = (position.margin * (position.percentChange / 100)).toFixed(2);
           this.checkIfLiquidated(position.percentChange, position.id, position.currentPrice);
         });
       }
-
       this.connection.onopen = () => {
         console.log("Successfully connected to websocket future positions server...");
       };
@@ -299,11 +231,6 @@ h2 {
   font-size: 15px;
 }
 
-/* .header .position-cell {
-  padding: 10px;
-  border-bottom: 1px solid #34383e;
-} */
-
 .positions-row {
   border-bottom: 1px solid #34383e;
 }
@@ -322,4 +249,5 @@ h2 {
 
 .close-btn:hover {
   cursor: pointer;
-}</style>
+}
+</style>
