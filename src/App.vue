@@ -88,5 +88,9 @@ body {
 a:hover {
   cursor: pointer;
 }
+
+hr{
+  box-shadow: 0 3px 6px rgba(255, 255, 255, 0.733);
+}
     
 </style>
