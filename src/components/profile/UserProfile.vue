@@ -6,6 +6,7 @@
             <nav>
 		<ul>
 			<li><a @click="routeToWallet">Wallet</a></li>
+			<li><a @click="routeToStaking">Staking</a></li>
 			<li><a @click="routeToTransfer">Transfer </a></li>
 			<br> <br>
 			<li><a href="#">Deposit</a></li>
@@ -34,12 +35,15 @@ export default {
 			this.$router.push('/profile/transfer')
 		},
 
+		routeToStaking(){
+			this.$router.push('/profile/staking')
+		},
+
 		logout(){
+			this.$router.go('/main');
 			localStorage.removeItem('jwt');
-			this.$router.push('/main');
 			this.$emit('logout', false);
 			delete axios.defaults.headers.common['Authorization'];
-
 		}
 	}
 }

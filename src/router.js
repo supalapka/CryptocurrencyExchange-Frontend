@@ -6,12 +6,14 @@ import JustRegister from "@/Views/JustRegister"
 import JustLogin from "@/Views/JustLogin"
 import UserProfile from "@/components/profile/UserProfile"
 import UserWallet from "@/components/profile/UserWallet"
+import UserStaking from "@/components/profile/UserStaking"
 import TransferCrypto from "@/components/profile/TransferCrypto"
 import FuturesPage from "@/Views/FuturesPage"
+import StakingPage from "@/Views/StakingPage"
 
 const routes = [
   {
-    path: '/main',
+    path: '/',
     component: MainPage
   },
   {
@@ -25,6 +27,10 @@ const routes = [
   {
     path: '/register',
     component: JustRegister
+  },
+  {
+    path: '/staking',
+    component: StakingPage
   },
   {
     path: '/login',
@@ -46,7 +52,11 @@ const routes = [
       {
         path: 'transfer',
         component: TransferCrypto
-      }
+      },
+      {
+        path: 'staking',
+        component: UserStaking
+      },
     ]
   },
 

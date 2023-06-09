@@ -14,6 +14,10 @@
          <button class="header-btn" @click="goToFutures">Futures</button>
         </div>
 
+        <div class="list">
+         <button class="header-btn" @click="this.$router.push('/staking')">Staking</button>
+        </div>
+
         <div class="login">
           <span  v-if="!this.isLoggedInMain" ><a @click="goToLogin">Login</a> / <a @click="goToRegister">Register</a> </span>
           <div class="user-email" v-else>
@@ -73,7 +77,7 @@ import CryptoSearch from './CryptoSearch.vue';
     },
 
     goToMain() {
-      this.$router.push('/main')
+      this.$router.push('/')
     },
 
     goToRegister() {
