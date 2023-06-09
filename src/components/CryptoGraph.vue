@@ -77,6 +77,10 @@
                 y: [parseFloat(data.open), parseFloat(data.high), parseFloat(data.low), parseFloat(data.close)],
                 }));
             }
+        },
+
+        created(){
+          this.updateTimeFrame("1w");
         }
 
         }
