@@ -5,14 +5,14 @@
       <form @submit.prevent="register">
 
         <label for="email">Email</label>
-        <input type="email" v-model="email" required />
+        <input type="email" v-model="email" required maxlength="32"/>
         <br>
         <br>
         <label for="password">Password</label>
-        <input type="password" v-model="password" required />
+        <input type="password" v-model="password" required minlength="6"/>
 
         <label for="password">Confirm Password</label>
-        <input type="password" v-model="confirmPassword" required />
+        <input type="password" v-model="confirmPassword" required minlength="6" />
 
         <button class="button" type="submit">Register</button>
       </form>

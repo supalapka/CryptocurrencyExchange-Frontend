@@ -5,11 +5,11 @@
       <form @submit.prevent="login">
 
         <label for="email">Email</label>
-        <input type="email" v-model="email" required />
+        <input type="email" v-model="email" required maxlength="32"/>
         <br>
         <br>
         <label for="password">Password</label>
-        <input type="password"  v-model="password"  required />
+        <input type="password"  v-model="password"  required minlength="6"/>
 
 
         <button class="button" type="submit">Login</button>
