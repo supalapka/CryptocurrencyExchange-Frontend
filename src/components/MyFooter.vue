@@ -3,7 +3,7 @@
   <div class="footer-container">
     <div class="footer-col">
       <h3>About Us</h3>
-      <p>Our crypto exchange is focused on...</p>
+      <p>Our crypto exchange is focused on providing platform for buying, trading, and staking cryptocurrencies. </p>
       <hr>
       <ul>
         <li><a href="#">Company</a></li>
@@ -48,9 +48,12 @@
 
 
 <style scoped>
-/* Footer styles */
+*{
+  text-shadow: 0 3px 6px rgba(2, 2, 2, 0.568);
+}
+
 footer {
-  background-color: #292b42;
+  background-color: #292a3a;
   color: #fff;
   font-family: Arial, sans-serif;
   font-size: 16px;
