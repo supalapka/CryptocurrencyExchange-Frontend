@@ -28,6 +28,8 @@ import FuturesList from "@/components/futures/FuturesList.vue"
 import FuturesInput from "@/components/futures/FuturesInput.vue"
 import CryptoGraph from "@/components/CryptoGraph.vue"
 import PositionsList from "@/components/futures/PositionsList.vue"
+import axios from 'axios'
+import { baseUrl } from '@/utils/utils'
 export default{
     components:{
     FuturesList,
@@ -38,9 +40,14 @@ export default{
 
     data(){
         return{
-            symbol: '',
+            symbol: 'BTCUSDT',
             price: '',
         }
+    },
+     
+    async created(){
+        const response = await axios.get(`${baseUrl}/market/price/${this.symbol}`)
+        this.price = response.data;
     },
 
     methods:{
