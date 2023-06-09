@@ -28,18 +28,19 @@
                     </div>
                     <div class="position-cell">{{ position.action }}</div>
                 </div>
-                <p>Score for last {{ historyPositions.length }} positions: <span
-                        :class="parseFloat(totalProfit) > 0 ? 'positive' : 'negative'"> {{ totalProfit.toFixed(2)
-                        }}$
-                    </span></p>
-            </div>
-            <div class="show-more-container" @click="showMore">
+                <div class="show-more-container" @click="showMore">
                 <div class="show-more-text">
                     Show more
                 </div>
                 <div class="show-more-line"></div>
                 <div class="show-more-glow"></div>
             </div>
+                <p>Score for last {{ historyPositions.length }} positions: <span
+                        :class="parseFloat(totalProfit) > 0 ? 'positive' : 'negative'"> {{ totalProfit.toFixed(2)
+                        }}$
+                    </span></p>
+            </div>
+           
         </div>
     </div>
 </template>
@@ -107,7 +108,8 @@ export default {
 
 
 <style scoped>
-.show-more-container {
+.show-more-container { 
+    margin-top: 10px;
     position: relative;
     display: flex;
     justify-content: center;
